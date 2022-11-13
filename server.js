@@ -58,8 +58,22 @@ MongoClient.connect(connectionStr)
                     upsert: true
                 }
             )
-            .then(result => console.log(result))
+            .then(result => res.json('Success'))
             .catch(error => console.error(error))
+        })
+
+        app.delete('/quotes', (req, res) => {
+            console.log(req)
+            quotesCollection.deleteOne(
+                {name: req.body.name},
+            )
+            .then(result =>{
+                if(result.deletedCount === 0){
+                    return res.json('No quote to delete')
+                }
+                res.json("Deleted Darth Vader's quote")
+            })
+            .catch(err => console.error(err))
         })
 
         app.listen(3000, function(){
